@@ -49,16 +49,23 @@ end
 local success, runtimeErr = pcall(fn)
 if not success then
 end
-task.spawn(function()
-    local ok = false
+local function Notify(title, text, duration)
+    local done = false
     repeat
-        ok = pcall(function()
+        done = pcall(function()
             StarterGui:SetCore("SendNotification", {
-                Title = "BluuHub",
-                Text = (cfg.name or "Game") .. " script loaded!",
-                Duration = 5
+                Title    = title,
+                Text     = text,
+                Duration = duration or 5
             })
         end)
-        if not ok then task.wait(1) end
-    until ok
+        if not done then
+            task.wait(1)
+        end
+    until done
 end
+task.spawn(function()
+    Notify("BluuHub", (cfg.name or "Game") .. " script loaded!", 8)
+    task.wait(5)
+    Notify("BluuHub", "Join our Discord for updates!", 6)
+end)
