@@ -1,5 +1,5 @@
 repeat task.wait() until game:IsLoaded()
-local StarterGui = game.StarterGui
+local StarterGui = game:GetService("StarterGui")
 local placeId = game.PlaceId
 local BluuHub = {}
 function BluuHub:GetConfig()
