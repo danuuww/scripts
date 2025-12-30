@@ -1,4 +1,5 @@
 repeat task.wait() until game:IsLoaded()
+local StarterGui = game.StarterGui
 local placeId = game.PlaceId
 local BluuHub = {}
 function BluuHub:GetConfig()
@@ -48,10 +49,16 @@ end
 local success, runtimeErr = pcall(fn)
 if not success then
 end
-pcall(function()
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "BluuHub",
-        Text  = (cfg.name or "Game") .. " script loaded!",
-        Duration = 5
-    })
-end)
+task.spawn(function()
+    local ok = false
+    repeat
+        ok = pcall(function()
+            StarterGui:SetCore("SendNotification", {
+                Title = "BluuHub",
+                Text = (cfg.name or "Game") .. " script loaded!",
+                Duration = 5
+            })
+        end)
+        if not ok then task.wait(1) end
+    until ok
+end
