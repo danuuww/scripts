@@ -48,8 +48,3 @@ end
 local success, runtimeErr = pcall(fn)
 if not success then
 end
-task.spawn(function()
-    Notify("BluuHub", (cfg.name or "Game") .. " script loaded!", 8)
-    task.wait(5)
-    Notify("BluuHub", "Join our Discord for updates!", 6)
-end)
