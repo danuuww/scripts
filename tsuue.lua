@@ -1,7 +1,7 @@
 local BluuHub = {
     [9788848685] = {
         Name = "Indo Hangout",
-        Url  = "https://api.jnkie.com/api/v1/luascripts/public/be431fd37bdf8102faafbf86acb436f1221bae68855a0b5e854486bbdee17f3e/download"
+        Url  = "https://api.jnkie.com/api/v1/luascripts/public/f465882f1c354ad44d67077d02fa58b4246fa62a667aeb32daf47ddcdb369d14/download"
     },
     [93978595733734] = {
         Name = "Violence District",
