@@ -7,9 +7,9 @@ local BluuHub = {
         Name = "Violence District",
         Url  = "https://api.jnkie.com/api/v1/luascripts/public/54e5af0e98bee1d19f9097400643462f8545229d66d0812fa5bf175e7b892649/download"
     },
-    [86096929771195] = {
-        Name = "Indo Beach",
-        Url  = "https://raw.githubusercontent.com/danuuww/scripts/refs/heads/main/9128727.lua"
+    [8356562067] = {
+        Name = "Indo Voice",
+        Url  = "https://api.jnkie.com/api/v1/luascripts/public/0784588f42c63319ca87492557153e884c055b593352525ba5d44a3edb0164f2/download"
     },
 }
 
