@@ -1,4 +1,3 @@
-local placeId = game.PlaceId
 local BluuHub = {
     [9788848685] = {
         Name = "Indo Hangout",
@@ -21,6 +20,7 @@ local BluuHub = {
         Url = "https://api.jnkie.com/api/v1/luascripts/public/fea3eeccd1fab9b7e49b1ad06605484816db5867bf8d38c0877b4d3cd9f7a23e/download"
     },
 }
+local placeId = game.PlaceId
 local cfg = BluuHub[placeId]
 if not cfg then
     warn("[BluuHub] Game not supported. PlaceId:", placeId)
