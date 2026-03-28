@@ -23,39 +23,52 @@ local BluuHub = {
 local placeId = game.PlaceId
 local cfg = BluuHub[placeId]
 if not cfg then
-    warn("[BluuHub] Game not supported. PlaceId:", placeId)
     return
 end
-local gameSrc, fetchDone = nil, false
-task.spawn(function()
-    local ok, src = pcall(function()
-        return game:HttpGet(cfg.Url)
-    end)
-    if not ok then
-        warn("[BluuHub] HttpGet error:", src)
-    end
-    gameSrc = ok and src or nil
-    fetchDone = true
+local ok, res = pcall(function()
+    return game:HttpGet(cfg.Url)
 end)
-if not game:IsLoaded() then
-    repeat task.wait() until game:IsLoaded()
-end
-local waited = 0
-while (not fetchDone or waited < 3) and waited < 8 do
-    task.wait(0.1)
-    waited += 0.1
-end
-if not gameSrc then
-    warn("[BluuHub] Failed to fetch game script.")
+if not ok then
+    warn("[BluuHub] HttpGet failed:", res)
     return
 end
-local fn, err = loadstring(gameSrc)
+local fn, err = loadstring(res)
 if not fn then
-    warn("[BluuHub] Failed to load game script:", err)
+    warn("[BluuHub] loadstring error:", err)
     return
+end
+local PRELOAD_PLACES = {
+    [8356562067] = true,
+}
+if PRELOAD_PLACES[placeId] then
+    local ReplicatedFirst   = game:GetService("ReplicatedFirst")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    getgenv()._BluuModules = getgenv()._BluuModules or {}
+
+    pcall(function()
+        getgenv()._BluuModules.ReplicaManager = require(
+            ReplicatedFirst:WaitForChild("Manager"):WaitForChild("ReplicaManager")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.DataEnum = require(
+            ReplicatedStorage:WaitForChild("Enum"):WaitForChild("Data")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.ItemEnum = require(
+            ReplicatedStorage:WaitForChild("Enum"):WaitForChild("Item")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.FishContent = require(
+            ReplicatedStorage:WaitForChild("Content"):WaitForChild("Fish")
+        )
+    end)
 end
 task.wait(3)
-local success, runtimeErr = pcall(fn)
-if not success then
-    warn("[BluuHub] Game script Runtime error:", runtimeErr)
+local okRun, runErr = pcall(fn)
+if not okRun then
+    warn("[BluuHub] script runtime error:", runErr)
 end
