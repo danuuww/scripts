@@ -54,6 +54,7 @@ if not fn then
     warn("[BluuHub] Failed to load game script:", err)
     return
 end
+task.wait(3)
 local success, runtimeErr = pcall(fn)
 if not success then
     warn("[BluuHub] Game script Runtime error:", runtimeErr)
