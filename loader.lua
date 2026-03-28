@@ -20,13 +20,11 @@ local BluuHub = {
         Url = "https://api.jnkie.com/api/v1/luascripts/public/fea3eeccd1fab9b7e49b1ad06605484816db5867bf8d38c0877b4d3cd9f7a23e/download"
     },
 }
-
 local placeId = game.PlaceId
 local cfg = BluuHub[placeId]
 if not cfg then
     return
 end
-
 local ok, res = pcall(function()
     return game:HttpGet(cfg.Url)
 end)
@@ -34,13 +32,12 @@ if not ok then
     warn("[BluuHub] HttpGet failed:", res)
     return
 end
-
 local fn, err = loadstring(res)
 if not fn then
     warn("[BluuHub] loadstring error:", err)
     return
 end
-
+task.wait(3)
 local okRun, runErr = pcall(fn)
 if not okRun then
     warn("[BluuHub] script runtime error:", runErr)
