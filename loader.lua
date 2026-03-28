@@ -37,6 +37,36 @@ if not fn then
     warn("[BluuHub] loadstring error:", err)
     return
 end
+local PRELOAD_PLACES = {
+    [8356562067] = true,
+}
+if PRELOAD_PLACES[placeId] then
+    local ReplicatedFirst   = game:GetService("ReplicatedFirst")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    getgenv()._BluuModules = getgenv()._BluuModules or {}
+
+    pcall(function()
+        getgenv()._BluuModules.ReplicaManager = require(
+            ReplicatedFirst:WaitForChild("Manager"):WaitForChild("ReplicaManager")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.DataEnum = require(
+            ReplicatedStorage:WaitForChild("Enum"):WaitForChild("Data")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.ItemEnum = require(
+            ReplicatedStorage:WaitForChild("Enum"):WaitForChild("Item")
+        )
+    end)
+    pcall(function()
+        getgenv()._BluuModules.FishContent = require(
+            ReplicatedStorage:WaitForChild("Content"):WaitForChild("Fish")
+        )
+    end)
+end
 task.wait(3)
 local okRun, runErr = pcall(fn)
 if not okRun then
