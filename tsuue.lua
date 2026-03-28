@@ -29,7 +29,7 @@ end
 local gameSrc, fetchDone = nil, false
 task.spawn(function()
     local ok, src = pcall(function()
-        return game:HttpGet(cfg.url)
+        return game:HttpGet(cfg.Url)
     end)
     gameSrc = ok and src or nil
     fetchDone = true
