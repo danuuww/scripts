@@ -31,6 +31,9 @@ task.spawn(function()
     local ok, src = pcall(function()
         return game:HttpGet(cfg.Url)
     end)
+    if not ok then
+        warn("[BluuHub] HttpGet error:", src)
+    end
     gameSrc = ok and src or nil
     fetchDone = true
 end)
