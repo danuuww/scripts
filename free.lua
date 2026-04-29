@@ -12,13 +12,11 @@ local BluuHub = {
         Url  = "https://raw.githubusercontent.com/danuuww/scripts/refs/heads/main/9128727.lua"
     },
 }
-
 local placeId = game.PlaceId
 local cfg = BluuHub[placeId]
 if not cfg then
     return
 end
-
 local ok, res = pcall(function()
     return game:HttpGet(cfg.Url)
 end)
@@ -26,14 +24,13 @@ if not ok then
     warn("[BluuHub] HttpGet failed:", res)
     return
 end
-
 local fn, err = loadstring(res)
 if not fn then
     warn("[BluuHub] loadstring error:", err)
     return
 end
-
+task.wait(3)
 local okRun, runErr = pcall(fn)
 if not okRun then
-    --warn("[BluuHub] script runtime error:", runErr)
+    warn("[BluuHub] script runtime error:", runErr)
 end
