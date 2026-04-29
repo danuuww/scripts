@@ -35,5 +35,5 @@ end
 
 local okRun, runErr = pcall(fn)
 if not okRun then
-    warn("[BluuHub] script runtime error:", runErr)
+    --warn("[BluuHub] script runtime error:", runErr)
 end
