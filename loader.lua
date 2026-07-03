@@ -19,6 +19,10 @@ local maps = {
         name = "Sambung Kata",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/fea3eeccd1fab9b7e49b1ad06605484816db5867bf8d38c0877b4d3cd9f7a23e/download",
     },
+    [120189115846709] = {
+        name = "TTK",
+        src  = "https://api.jnkie.com/api/v1/luascripts/public/7705c7b3eb250c61dd00392fd74ff5fa70b6bfb47064dd2063d404fb89dd81f8/download",
+    },
 }
 local modules = {
     {
@@ -30,6 +34,7 @@ local modules = {
             [8356562067]      = true, -- IDV
             [83369512629707]  = true, -- Sawah Indo
             [130342654546662] = true, -- Sambung Kata
+            [120189115846709] = true, -- TTK
         },
     },
 }
