@@ -49,19 +49,21 @@ local function boot(name, src)
         return warn("[BluuHub] " .. name .. " compile error: " .. tostring(err))
     end
     task.spawn(function()
+        task.wait(3)
         local okRun, runErr = pcall(chunk)
         if not okRun then
             warn("[BluuHub] " .. name .. " runtime error: " .. tostring(runErr))
         end
     end)
 end
-task.wait(3)
+-- task.wait(3)
 local current = maps[place]
 if current then
     boot(current.name, current.src)
 end
 for _, mod in ipairs(modules) do
     if not mod.skip[place] then
+        task.wait(1)
         boot(mod.name, mod.src)
     end
 end
