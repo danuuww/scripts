@@ -1,3 +1,6 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 local maps = {
     [9788848685] = {
         name = "Indo Hangout",
