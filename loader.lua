@@ -56,7 +56,7 @@ local function boot(name, src)
         end
     end)
 end
-task.wait(3)
+task.wait(3.5)
 local current = maps[place]
 if current then
     boot(current.name, current.src)
