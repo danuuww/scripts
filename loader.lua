@@ -30,6 +30,10 @@ local maps = {
         name = "Pantai Voice",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/e8c47512dc126b57c078bcb5385929a47627838590804d287b4f288252cf5092/download",
     },
+    [114234929420007] = {
+        name = "BloxStrike",
+        src  = "https://api.jnkie.com/api/v1/luascripts/public/85efef4b82505e091496a58db6a865a2bbf557422e534b6280f522b8e9ee4a0d/download",
+    },
 }
 local modules = {
     {
@@ -43,6 +47,7 @@ local modules = {
             [130342654546662] = true, -- Sambung Kata
             [120189115846709] = true, -- TTK
             [126463495082631] = true, -- Pantai Voice
+            [114234929420007] = true, -- BloxStrike
         },
     },
 }
