@@ -11478,6 +11478,9 @@ function Library:CreateWindow(WindowInfo)
         -- BluuHub equal-height pairs: stretch the shorter column's groupbox
         -- backgrounds so both sides of a row end at the same height. Elements
         -- keep their own size; only the box background gains empty space.
+        -- Natural heights come from Groupbox.ContentHeight (recomputed by
+        -- Groupbox:Resize from content), never from AbsoluteSize, which is
+        -- unreliable mid-tween.
         local function SyncPairHeights(Boxes)
             if not Boxes then
                 return
@@ -11487,11 +11490,11 @@ function Library:CreateWindow(WindowInfo)
                 local Height = 0
                 for _, Box in Boxes[SideKey] do
                     if Box.Visible ~= false and Box.BoxHolder.Visible then
-                        local Current = Box.BoxHolder.AbsoluteSize.Y
-                        if Current <= 0 then
+                        local Content = Box.ContentHeight
+                        if not Content or Content <= 0 then
                             return 0
                         end
-                        Height += Current - Box.MinHolderHeight
+                        Height += Content
                     end
                 end
                 return Height
@@ -11506,7 +11509,7 @@ function Library:CreateWindow(WindowInfo)
             local Target = math.max(LeftNatural, RightNatural)
 
             local function ApplyColumn(SideKey, Natural)
-                local Stretch = math.max(Target - Natural, 0)
+                local Stretch = math.clamp(Target - Natural, 0, 10000)
                 for _, Box in Boxes[SideKey] do
                     if Box.Visible ~= false and Box.BoxHolder.Visible then
                         if Box.MinHolderHeight ~= Stretch then
@@ -12425,6 +12428,7 @@ function Library:CreateWindow(WindowInfo)
                 DependencyBoxes = {},
                 Elements = {},
                 MinHolderHeight = 0,
+                ContentHeight = 0,
             }
 
             local ResizeTween
@@ -12442,12 +12446,13 @@ function Library:CreateWindow(WindowInfo)
                     ContainerSize = math.min(ContainerSize, GetPopOutBodyMaxHeight(Groupbox, TopSize + 1))
                 end
 
-                local TargetSize = UDim2.new(1, 0, 0, if Groupbox.Collapsed then TopSize else (TopSize + 1 + ContainerSize))
                 local NaturalHeight = if Groupbox.Collapsed then TopSize else (TopSize + 1 + ContainerSize)
+                Groupbox.ContentHeight = NaturalHeight
+                local StretchedHeight = NaturalHeight
                 if Groupbox.MinHolderHeight > 0 and not Groupbox.Collapsed then
-                    NaturalHeight = math.max(NaturalHeight, Groupbox.MinHolderHeight + 8)
+                    StretchedHeight = math.max(NaturalHeight, Groupbox.MinHolderHeight)
                 end
-                TargetSize = UDim2.new(1, 0, 0, NaturalHeight)
+                local TargetSize = UDim2.new(1, 0, 0, StretchedHeight)
                 GroupboxContainer.Size = UDim2.new(1, 0, 0, ContainerSize)
                 GroupboxLine.Visible = not Groupbox.Collapsed
 
