@@ -11510,10 +11510,16 @@ function Library:CreateWindow(WindowInfo)
 
             local function ApplyColumn(SideKey, Natural)
                 local Stretch = math.clamp(Target - Natural, 0, 10000)
+                local FirstVisible = true
                 for _, Box in Boxes[SideKey] do
                     if Box.Visible ~= false and Box.BoxHolder.Visible then
-                        if Box.MinHolderHeight ~= Stretch then
-                            Box.MinHolderHeight = Stretch
+                        -- The whole-column gap is carried by the first visible
+                        -- box only; the others must stay at 0 or the column
+                        -- would gain the gap once per box.
+                        local BoxStretch = if FirstVisible then Stretch else 0
+                        FirstVisible = false
+                        if Box.MinHolderHeight ~= BoxStretch then
+                            Box.MinHolderHeight = BoxStretch
                             Box:Resize()
                         end
                     end
