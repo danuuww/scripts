@@ -12448,10 +12448,10 @@ function Library:CreateWindow(WindowInfo)
 
                 local NaturalHeight = if Groupbox.Collapsed then TopSize else (TopSize + 1 + ContainerSize)
                 Groupbox.ContentHeight = NaturalHeight
-                local StretchedHeight = NaturalHeight
-                if Groupbox.MinHolderHeight > 0 and not Groupbox.Collapsed then
-                    StretchedHeight = math.max(NaturalHeight, Groupbox.MinHolderHeight)
-                end
+                -- MinHolderHeight is the pair gap to add on top of the natural
+                -- height, so a taller partner can close it and the next sync can
+                -- recompute it freely.
+                local StretchedHeight = NaturalHeight + (Groupbox.Collapsed and 0 or math.max(Groupbox.MinHolderHeight, 0))
                 local TargetSize = UDim2.new(1, 0, 0, StretchedHeight)
                 GroupboxContainer.Size = UDim2.new(1, 0, 0, ContainerSize)
                 GroupboxLine.Visible = not Groupbox.Collapsed
