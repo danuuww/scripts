@@ -11332,7 +11332,11 @@ function Library:CreateWindow(WindowInfo)
     end
 
     function Window:SetSidebarWidth(Width)
-        Width = math.clamp(Width, 48, MainFrame.Size.X.Offset - WindowInfo.MinContainerWidth - 1)
+        -- On narrow screens the requested window width can be below
+        -- MinContainerWidth, which would make this clamp upper bound negative
+        -- and crash executors (Delta mobile: "max must be >= min"). Sidebar
+        -- falls back to a safe compact width in that case.
+        Width = math.clamp(Width, 48, math.max(48, MainFrame.Size.X.Offset - WindowInfo.MinContainerWidth - 1))
 
         DividerLine.Position = UDim2.fromOffset(Width, 0)
 
