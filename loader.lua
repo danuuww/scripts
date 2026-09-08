@@ -30,9 +30,11 @@ local maps = {
         name = "Pantai Voice",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/e8c47512dc126b57c078bcb5385929a47627838590804d287b4f288252cf5092/download",
     },
-    [114234929420007] = {
+}
+local games = {
+    [7633926880] = {
         name = "BloxStrike",
-        src  = "https://api.jnkie.com/api/v1/luascripts/public/85efef4b82505e091496a58db6a865a2bbf557422e534b6280f522b8e9ee4a0d/download",
+        src = "https://api.jnkie.com/api/v1/luascripts/public/85efef4b82505e091496a58db6a865a2bbf557422e534b6280f522b8e9ee4a0d/download",
     },
 }
 local modules = {
@@ -47,11 +49,14 @@ local modules = {
             [130342654546662] = true, -- Sambung Kata
             [120189115846709] = true, -- TTK
             [126463495082631] = true, -- Pantai Voice
-            [114234929420007] = true, -- BloxStrike
+        },
+         skipGames = {
+            [7633926880] = true, -- BloxStrike
         },
     },
 }
 local place = game.PlaceId
+local gameId = game.GameId
 local function boot(name, src)
     local ok, body = pcall(game.HttpGet, game, src)
     if not ok then
@@ -70,13 +75,14 @@ local function boot(name, src)
     end)
 end
 task.wait(3.5)
-local current = maps[place]
+local current = maps[place] or games[gameId]
 if current then
     boot(current.name, current.src)
 end
 for _, mod in ipairs(modules) do
-    if not mod.skip[place] then
-        --task.wait(1)
+    local skipPlace = mod.skip and mod.skip[place]
+    local skipGame = mod.skipGames and mod.skipGames[gameId]
+    if not skipPlace and not skipGame then
         boot(mod.name, mod.src)
     end
 end
