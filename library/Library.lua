@@ -11514,14 +11514,17 @@ function Library:CreateWindow(WindowInfo)
 
             local function ApplyColumn(SideKey, Natural)
                 local Stretch = math.clamp(Target - Natural, 0, 10000)
-                local FirstVisible = true
+                local LastVisible = nil
                 for _, Box in Boxes[SideKey] do
                     if Box.Visible ~= false and Box.BoxHolder.Visible then
-                        -- The whole-column gap is carried by the first visible
-                        -- box only; the others must stay at 0 or the column
-                        -- would gain the gap once per box.
-                        local BoxStretch = if FirstVisible then Stretch else 0
-                        FirstVisible = false
+                        LastVisible = Box
+                    end
+                end
+                for _, Box in Boxes[SideKey] do
+                    if Box.Visible ~= false and Box.BoxHolder.Visible then
+                        -- The whole-column gap belongs under the last visible
+                        -- box so spacing between stacked boxes stays natural.
+                        local BoxStretch = if Box == LastVisible then Stretch else 0
                         if Box.MinHolderHeight ~= BoxStretch then
                             Box.MinHolderHeight = BoxStretch
                             Box:Resize()
@@ -11927,9 +11930,22 @@ function Library:CreateWindow(WindowInfo)
                 BoxHolder = BoxHolder,
                 Holder = TabboxHolder,
                 Tabs = {},
-
                 ParentBox = if ParentObj.Type == "Groupbox" then ParentObj else nil,
+                ContentHeight = 0,
+                MinHolderHeight = 0,
             }
+
+            -- BluuHub equal-height pairs: register the tabbox with the current
+            -- pair row so SyncPairHeights can line it up with its partner
+            -- column, exactly like groupboxes.
+            if CurrentPairBoxes and Info.Side ~= 3 and ParentObj.Type ~= "Groupbox" then
+                local PairBoxes = CurrentPairBoxes
+                local SideKey = if Info.Side == 2 then "Right" else "Left"
+                table.insert(PairBoxes[SideKey], Tabbox)
+                Tabbox.SyncPairHeights = function()
+                    SyncPairHeights(PairBoxes)
+                end
+            end
 
             function Tabbox:UpdateCorners()
                 for _, Tab in Tabbox.Tabs do
@@ -12106,7 +12122,22 @@ function Library:CreateWindow(WindowInfo)
                         ContentSize = math.min(ContentSize, GetPopOutBodyMaxHeight(Tabbox, 35))
                     end
 
-                    TabboxHolder.Size = UDim2.new(1, 0, 0, ContentSize + 35)
+                    local NaturalHeight = ContentSize + 35
+                    Tabbox.ContentHeight = NaturalHeight
+                    -- Equal-height pairs: MinHolderHeight is the additive gap
+                    -- toward the partner column, mirroring Groupbox behavior.
+                    local StretchedHeight = NaturalHeight + math.max(Tabbox.MinHolderHeight or 0, 0)
+                    TabboxHolder.Size = UDim2.new(1, 0, 0, StretchedHeight)
+
+                    if Tabbox.SyncPairHeights then
+                        local SyncFn = Tabbox.SyncPairHeights
+                        task.delay(0.25, function()
+                            if not Library.Unloaded and Tabbox.SyncPairHeights == SyncFn then
+                                SyncFn()
+                            end
+                        end)
+                    end
+
                     if ParentObj.Type == "Groupbox" then
                         ParentObj:Resize()
                     end
