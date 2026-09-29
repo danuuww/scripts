@@ -26,7 +26,7 @@ local maps = {
         name = "TTK",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/7705c7b3eb250c61dd00392fd74ff5fa70b6bfb47064dd2063d404fb89dd81f8/download",
     },
-    [126463495082631] = {
+    [103727838626404] = {
         name = "Pantai Voice",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/e8c47512dc126b57c078bcb5385929a47627838590804d287b4f288252cf5092/download",
     },
@@ -48,7 +48,7 @@ local modules = {
             [83369512629707]  = true, -- Sawah Indo
             [130342654546662] = true, -- Sambung Kata
             [120189115846709] = true, -- TTK
-            [126463495082631] = true, -- Pantai Voice
+            [103727838626404] = true, -- Pantai Voice
         },
          skipGames = {
             [7633926880] = true, -- BloxStrike
