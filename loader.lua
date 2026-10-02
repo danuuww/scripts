@@ -30,6 +30,10 @@ local maps = {
         name = "Pantai Voice",
         src  = "https://api.jnkie.com/api/v1/luascripts/public/e8c47512dc126b57c078bcb5385929a47627838590804d287b4f288252cf5092/download",
     },
+    [124216119978534] = {
+        name = "Ride A Pet",
+        src  = "https://api.jnkie.com/api/v1/luascripts/public/4383ac86f786b065d438dc946e5567fe1be853a9071d822d71941d5b394b7f1d/download"
+    },
 }
 local games = {
     [7633926880] = {
@@ -49,6 +53,7 @@ local modules = {
             [130342654546662] = true, -- Sambung Kata
             [120189115846709] = true, -- TTK
             [103727838626404] = true, -- Pantai Voice
+            [124216119978534] = true, -- Ride A Pet
         },
          skipGames = {
             [7633926880] = true, -- BloxStrike
